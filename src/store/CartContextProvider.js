@@ -3,21 +3,35 @@ import CartContext from './cart-context';
 
 const cartReducer = (state, action) => {
   if (action.type === 'ADD') {
-    const items = [...state.items, action.newItem];
+    const oldItem = state.items.find((el) => el.id === action.newItem.id);
+    if (oldItem) {
+      oldItem.amount += action.newItem.amount;
+    }
+
+    let items = state.items;
+    if (!oldItem) {
+      items = [...state.items, action.newItem];
+    }
+
     return {
       items,
-      totalAmount:
-        state.totalAmount + action.newItem.amount * action.newItem.price,
-      totalCount: state.totalCount + 1,
+      totalPrice:
+        state.totalPrice + action.newItem.amount * action.newItem.price,
+      totalCount: state.totalCount + action.newItem.amount,
     };
   }
 
   if (action.type === 'REMOVE') {
-    const items = state.items.filter((el) => el.id === action.itemId);
+    const oldItem = state.items.find((el) => el.id === action.itemId);
+    oldItem.amount--;
+
+    let items = state.items;
+    if (oldItem.amount === 0) {
+      items = state.items.filter((el) => el.id !== action.itemId);
+    }
     return {
       items,
-      totalAmount:
-        state.totalAmount - action.newItem.amount * action.newItem.price,
+      totalPrice: state.totalPrice - oldItem.price,
       totalCount: state.totalCount - 1,
     };
   }
@@ -26,7 +40,7 @@ const cartReducer = (state, action) => {
 const CartContextProvider = (props) => {
   const [state, dispatchCartAction] = useReducer(cartReducer, {
     items: [],
-    totalAmount: 0,
+    totalPrice: 0,
     totalCount: 0,
   });
   const [isVisible, setIsVisible] = useState(false);
@@ -52,7 +66,7 @@ const CartContextProvider = (props) => {
     showCart,
     hideCart,
     items: state.items,
-    totalAmount: state.totalAmount,
+    totalPrice: state.totalPrice,
     totalCount: state.totalCount,
     addItem,
     removeItem,
