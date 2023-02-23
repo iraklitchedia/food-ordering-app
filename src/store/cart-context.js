@@ -1,29 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const CartContext = React.createContext({
+  items: [],
+  addItem: () => {},
+  removeItem: () => {},
   isVisible: false,
-  showCart: () => {
-    console.log('test');
-  },
+  showCart: () => {},
   hideCart: () => {},
 });
-
-export const CartContextProvider = (props) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  const showCart = () => {
-    setIsVisible(true);
-  };
-
-  const hideCart = () => {
-    setIsVisible(false);
-  };
-
-  return (
-    <CartContext.Provider value={{ isVisible, showCart, hideCart }}>
-      {props.children}
-    </CartContext.Provider>
-  );
-};
 
 export default CartContext;

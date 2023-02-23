@@ -5,7 +5,7 @@ import CartContext from '../../store/cart-context';
 
 const Cart = () => {
   const cartContext = useContext(CartContext);
-  const cartItems = [{ id: 'c1', name: 'Sushi', amount: 2, price: 12.99 }];
+  const cartItems = cartContext.items;
 
   const closeHandler = () => {
     cartContext.hideCart();
@@ -28,7 +28,7 @@ const Cart = () => {
       </ul>
       <div className={classes.total}>
         <span>Total amount</span>
-        <span>23.25</span>
+        <span>{cartContext.totalAmount}</span>
       </div>
       <div className={classes.actions}>
         <button className={classes['button--alt']} onClick={closeHandler}>

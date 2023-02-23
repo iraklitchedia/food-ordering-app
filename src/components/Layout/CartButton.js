@@ -4,11 +4,9 @@ import CartContext from './../../store/cart-context';
 import { useContext } from 'react';
 
 const CartButton = () => {
-  const itemCount = 0;
   const ctx = useContext(CartContext);
 
   const onClickHandler = () => {
-    console.log('clicked');
     ctx.showCart();
   };
 
@@ -18,7 +16,7 @@ const CartButton = () => {
         <CartIcon />
       </span>
       <span>Cart</span>
-      <span className={classes.badge}>{itemCount}</span>
+      <span className={classes.badge}>{ctx.totalCount}</span>
     </button>
   );
 };
